@@ -21,20 +21,20 @@
 #include <fcntl.h>
 #include <pthread.h>
 
+#include <binder/IPCThreadState.h>
 #include <binder/Binder.h>
 #include <binder/BpBinder.h>
-#include <binder/IPCThreadState.h>
-#include <binder/Parcel.h>
 #include <binder/ProcessState.h>
 #include <binder/TextOutput.h>
 
-#include <cutils/ashmem.h>
+#include <errno.h>
 #include <utils/Debug.h>
-#include <utils/Flattenable.h>
 #include <utils/Log.h>
-#include <utils/misc.h>
 #include <utils/String8.h>
 #include <utils/String16.h>
+#include <utils/misc.h>
+#include <utils/Flattenable.h>
+#include <cutils/ashmem.h>
 
 #include <private/binder/binder_module.h>
 #include <private/binder/Static.h>
@@ -53,9 +53,9 @@
 #endif
 
 #define LOG_REFS(...)
-//#define LOG_REFS(...) ALOG(LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+//#define LOG_REFS(...) ALOG(LOG_DEBUG, "Parcel", __VA_ARGS__)
 #define LOG_ALLOC(...)
-//#define LOG_ALLOC(...) ALOG(LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+//#define LOG_ALLOC(...) ALOG(LOG_DEBUG, "Parcel", __VA_ARGS__)
 
 // ---------------------------------------------------------------------------
 
@@ -221,6 +221,7 @@ static void release_object(const sp<ProcessState>& proc,
 #ifdef DISABLE_ASHMEM_TRACKING
             } else if (obj.cookie != 0) {
                 close(obj.handle);
+#endif
             }
             return;
         }

@@ -1196,9 +1196,6 @@ bool Layer::shouldPresentNow(const DispSync& dispSync) const {
 
     // Ignore timestamps more than a second in the future
     bool isPlausible = timestamp < (expectedPresent + s2ns(1));
-    ALOGW_IF(!isPlausible, "[%s] Timestamp %" PRId64 " seems implausible "
-            "relative to expectedPresent %" PRId64, mName.string(), timestamp,
-            expectedPresent);
 
     bool isDue = timestamp < expectedPresent;
     return isDue || !isPlausible;
